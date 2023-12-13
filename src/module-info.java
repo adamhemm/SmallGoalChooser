@@ -6,4 +6,5 @@
  *
  */
 module SmallGoalChooser {
+	requires java.desktop;
 }
