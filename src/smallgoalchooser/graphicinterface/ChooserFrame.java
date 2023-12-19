@@ -3,6 +3,7 @@ package smallgoalchooser.graphicinterface;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*; 
+import smallgoalchooser.listhandler.ListHandler;
 
 public class ChooserFrame implements ActionListener {
 	
@@ -14,6 +15,7 @@ public class ChooserFrame implements ActionListener {
 	private JTextArea listDisplayArea;
 	private JScrollPane listDisplayPane;
 	private JLabel helperLabel;
+	private ListHandler listMaker;
 	//private JPanel panel;
 	
 	//private Font myFont = new Font("Ink Free", Font.BOLD, 10);
@@ -98,7 +100,9 @@ public class ChooserFrame implements ActionListener {
 			inputTextArea.setText(null);
 		}
 		else if(e.getSource() == saveButton) {
-			
+			listMaker.loadListArray(listDisplayArea.getText());
+			String currentGoal = listMaker.chooseCurrentGoal();
+			helperLabel.setText("Your current goal is: " + currentGoal);
 		}
 		else if(e.getSource() == yesButton) {
 			
