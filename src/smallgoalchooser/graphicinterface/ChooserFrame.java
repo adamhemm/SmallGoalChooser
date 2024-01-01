@@ -2,8 +2,11 @@ package smallgoalchooser.graphicinterface;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*; 
+import java.awt.event.*;
+import java.io.IOException;
+
 import smallgoalchooser.listhandler.ListHandler;
+import smallgoalchooser.savefile.FileManipulator;
 
 public class ChooserFrame implements ActionListener {
 	
@@ -17,10 +20,13 @@ public class ChooserFrame implements ActionListener {
 	private JLabel helperLabel;
 	private ListHandler listMaker;
 	//private JPanel panel;
+	private FileManipulator saveHandler;
 	
 	//private Font myFont = new Font("Ink Free", Font.BOLD, 10);
 	
-	public ChooserFrame() {
+	public ChooserFrame() throws IOException {
+		listMaker = new ListHandler();
+		saveHandler = new FileManipulator();
 		frame = new JFrame("Small Goal Helper");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(420, 550);
