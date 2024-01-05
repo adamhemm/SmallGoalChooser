@@ -19,7 +19,7 @@ public class ChooserFrame implements ActionListener {
 	private JScrollPane listDisplayPane;
 	private JLabel helperLabel;
 	private ListHandler listMaker;
-	//private JPanel panel;
+	private JPanel panel;
 	private FileManipulator saveHandler;
 	
 	//private Font myFont = new Font("Ink Free", Font.BOLD, 10);
@@ -56,11 +56,11 @@ public class ChooserFrame implements ActionListener {
 		
 		helperLabel = new JLabel("Enter a small goal and press Add to List");
 		helperLabel.setBounds(50, 50, 300, 50);
-		/*panel = new JPanel();
+		panel = new JPanel();
 		panel.setBounds(50, 10, 30, 50);
 		panel.setBackground(Color.black);
-		panel.setOpaque(true);
-		panel.setVisible(true);*/
+		panel.setOpaque(false);
+		panel.setVisible(false);
 		
 		addButton = new JButton("Add to List");
 		addButton.setBounds(50, 400, 100, 50);
@@ -68,15 +68,32 @@ public class ChooserFrame implements ActionListener {
 		saveButton = new JButton("Save List");
 		saveButton.setBounds(250, 400, 100, 50);
 		saveButton.addActionListener(this);
-		yesButton = new JButton("Yes");
+		yesButton = new JButton("Finished");
 		yesButton.setBounds(50, 400, 100, 50);
 		yesButton.addActionListener(this);
-		yesButton.setVisible(false);
-		noButton = new JButton("No");
+		noButton = new JButton("Not Yet");
 		noButton.setBounds(250, 400, 100, 50);
 		noButton.addActionListener(this);
-		noButton.setVisible(false);
 		
+		if(saveHandler.getFileIsThere()) {
+			yesButton.setVisible(true);
+			noButton.setVisible(true);
+			addButton.setVisible(false);
+			saveButton.setVisible(false);
+			inputScrollPane.setVisible(false);
+			listDisplayPane.setVisible(false);
+			
+			listMaker.loadFromSaveFile(saveHandler.getGoalListSaved());
+			helperLabel.setText("Your Current Goal is: " + listMaker.getCurrentGoal());
+		}
+		else {
+			yesButton.setVisible(false);
+			noButton.setVisible(false);
+			addButton.setVisible(true);
+			saveButton.setVisible(true);
+			inputScrollPane.setVisible(true);
+			listDisplayPane.setVisible(true);
+		}
 		//frame.add(textField);
 		//frame.add(textArea);
 		frame.add(helperLabel);
@@ -86,7 +103,7 @@ public class ChooserFrame implements ActionListener {
 		frame.add(saveButton);
 		frame.add(yesButton);
 		frame.add(noButton);
-		//frame.add(panel);
+		frame.add(panel);
 		frame.setVisible(true);
 	}
 
@@ -109,12 +126,39 @@ public class ChooserFrame implements ActionListener {
 			listMaker.loadListArray(listDisplayArea.getText());
 			String currentGoal = listMaker.chooseCurrentGoal();
 			helperLabel.setText("Your current goal is: " + currentGoal);
+			try {
+				saveHandler.saveGoalList(listMaker.createListToBeSaved());
+			} catch (IOException e1) {
+				System.out.println("Failed to save list of goals");
+				e1.printStackTrace();
+			}
 		}
 		else if(e.getSource() == yesButton) {
-			
+			listMaker.currentGoalCompleted();
+			String currentGoal = listMaker.chooseCurrentGoal();
+			if(currentGoal.isEmpty()) {
+				helperLabel.setText("You have completed all of your goals. Congratulation!");
+			}
+			else {
+				helperLabel.setText("Your current goal is: " + currentGoal);
+				try {
+					saveHandler.saveGoalList(listMaker.createListToBeSaved());
+				} catch (IOException e1) {
+					System.out.println("Failed to save list of goals");
+					e1.printStackTrace();
+				}
+			}
 		}
 		else if(e.getSource() == noButton) {
-			
+			if(!listMaker.getCurrentGoal().isEmpty()) {
+				try {
+					saveHandler.saveGoalList(listMaker.createListToBeSaved());
+				} catch (IOException e1) {
+					System.out.println("Failed to save list of goals");
+					e1.printStackTrace();
+				}
+			}
+			frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 		}
 	}
 

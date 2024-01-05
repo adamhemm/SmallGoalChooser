@@ -29,13 +29,13 @@ public class ListHandler {
 		splitSaveFile = saveFile.split("=");
 		currentGoal = splitSaveFile[0];
 		if(splitSaveFile[1].trim().length() > 0) {
-			goalsToDo = splitSaveFile[1].split("+");
+			goalsToDo = splitSaveFile[1].split("\\+");
 			for (String goal: goalsToDo) {
 				modifiableGoalsToDo.add(goal);
 			}
 		}
 		if(splitSaveFile[2].trim().length() > 0) {
-			goalsDone = splitSaveFile[2].split("+");
+			goalsDone = splitSaveFile[2].split("\\+");
 			for (String goal: goalsDone) {
 				modifiableGoalsDone.add(goal);
 			}
@@ -43,14 +43,17 @@ public class ListHandler {
 	}
 	
 	public String chooseCurrentGoal() {
-		currentGoalIndex = new Random().nextInt(modifiableGoalsToDo.size());
-		currentGoal = modifiableGoalsToDo.get(currentGoalIndex);
-		modifiableGoalsToDo.remove(currentGoalIndex);
+		if(modifiableGoalsToDo.size() > 0) {
+			currentGoalIndex = new Random().nextInt(modifiableGoalsToDo.size());
+			currentGoal = modifiableGoalsToDo.get(currentGoalIndex);
+			modifiableGoalsToDo.remove(currentGoalIndex);
+		}
 		return currentGoal;
 	}
 	
 	public void currentGoalCompleted() {
 		modifiableGoalsDone.add(currentGoal);
+		currentGoal = "";
 	}
 	
 	public String createListToBeSaved() {

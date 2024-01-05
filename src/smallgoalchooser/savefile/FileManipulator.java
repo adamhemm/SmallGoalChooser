@@ -33,9 +33,7 @@ public class FileManipulator {
 			while ((characterPosition=reader.read())!=-1) {
 				goalListSaved = goalListSaved + (char)characterPosition;
 			}
-		}
-		reader.close();
-		if(fileIsThere) {
+			reader.close();
 			File saveFile = new File("goal list.txt");
 			if(saveFile.delete()) {
 				
