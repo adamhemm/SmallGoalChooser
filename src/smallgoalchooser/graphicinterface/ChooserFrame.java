@@ -31,49 +31,83 @@ public class ChooserFrame implements ActionListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(420, 550);
 		
+		panel = new JPanel();
+		panel.setLayout(new GridBagLayout());
+		//panel.setBounds(50, 10, 30, 50);
+		//panel.setBackground(Color.black);
+		//panel.setOpaque(false);
+		panel.setVisible(true);
+		
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.weighty = 0.1;
+		gbc.gridwidth = 2;
+		
 		/*textField = new JTextField();
 		textField.setBounds(50,300,300,50);
 		textField.setFont(myFont);
 		textField.setText(null);
 		textField.setToolTipText("Enter a small goal here");*/
 		
+		helperLabel = new JLabel("Enter a small goal and press Add to List");
+		//helperLabel.setBounds(50, 50, 300, 50);
+		panel.add(helperLabel, gbc);
+		gbc.gridy++;
+		
 		inputTextArea = new JTextArea("", 5, 50);
-		inputTextArea.setBounds(50,250,300,100);
+		//inputTextArea.setBounds(50,250,300,100);
+		inputTextArea.setSize(300, 100);
 		inputTextArea.setLineWrap(true);
 		//textArea.setEditable(false);
 		//textArea.setText("hello");
 		inputScrollPane = new JScrollPane(inputTextArea);
-		inputScrollPane.setBounds(50,250,300,100);
+		//inputScrollPane.setBounds(50,250,300,100);
+		inputScrollPane.setSize(300, 100);
 		inputScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		gbc.fill = GridBagConstraints.BOTH;
+		panel.add(inputScrollPane, gbc);
+		gbc.gridy++;
+		
 		
 		listDisplayArea = new JTextArea("", 5, 50);
-		listDisplayArea.setBounds(50,100,300,100);
+		//listDisplayArea.setBounds(50,100,300,100);
+		listDisplayArea.setSize(300, 100);
 		listDisplayArea.setLineWrap(true);
 		listDisplayArea.setEditable(false);
 		listDisplayPane = new JScrollPane(listDisplayArea);
-		listDisplayPane.setBounds(50, 100, 300, 100);
+		//listDisplayPane.setBounds(50, 100, 300, 100);
+		listDisplayPane.setSize(300, 100);
 		listDisplayPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		panel.add(listDisplayPane, gbc);
+		gbc.gridy++;
+		gbc.fill = GridBagConstraints.NONE;
+		gbc.gridheight = 1;
+		gbc.gridwidth = 1;
+		gbc.anchor = GridBagConstraints.LINE_START;
 		
-		helperLabel = new JLabel("Enter a small goal and press Add to List");
-		helperLabel.setBounds(50, 50, 300, 50);
-		panel = new JPanel();
-		panel.setBounds(50, 10, 30, 50);
-		panel.setBackground(Color.black);
-		panel.setOpaque(false);
-		panel.setVisible(false);
 		
 		addButton = new JButton("Add to List");
-		addButton.setBounds(50, 400, 100, 50);
+		//addButton.setBounds(50, 400, 100, 50);
 		addButton.addActionListener(this);
-		saveButton = new JButton("Save List");
-		saveButton.setBounds(250, 400, 100, 50);
-		saveButton.addActionListener(this);
+		panel.add(addButton, gbc);
+		
 		yesButton = new JButton("Finished");
-		yesButton.setBounds(50, 400, 100, 50);
+		//yesButton.setBounds(50, 400, 100, 50);
 		yesButton.addActionListener(this);
+		panel.add(yesButton, gbc);
+		gbc.gridx++;
+		gbc.anchor = GridBagConstraints.LINE_END;
+		
+		saveButton = new JButton("Save List");
+		//saveButton.setBounds(250, 400, 100, 50);
+		saveButton.addActionListener(this);
+		panel.add(saveButton, gbc);
+		
 		noButton = new JButton("Not Yet");
-		noButton.setBounds(250, 400, 100, 50);
+		//noButton.setBounds(250, 400, 100, 50);
 		noButton.addActionListener(this);
+		panel.add(noButton, gbc);
 		
 		if(saveHandler.getFileIsThere()) {
 			yesButton.setVisible(true);
@@ -96,14 +130,15 @@ public class ChooserFrame implements ActionListener {
 		}
 		//frame.add(textField);
 		//frame.add(textArea);
-		frame.add(helperLabel);
+		/*frame.add(helperLabel);
 		frame.add(listDisplayPane);
 		frame.add(inputScrollPane);
 		frame.add(addButton);
 		frame.add(saveButton);
 		frame.add(yesButton);
-		frame.add(noButton);
-		frame.add(panel);
+		frame.add(noButton);*/
+		frame.getContentPane().add(panel);
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 	}
 
