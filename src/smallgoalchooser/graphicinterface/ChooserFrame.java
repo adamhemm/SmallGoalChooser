@@ -11,7 +11,7 @@ import smallgoalchooser.savefile.FileManipulator;
 public class ChooserFrame implements ActionListener {
 	
 	private JFrame frame;
-	private JButton addButton, saveButton, yesButton, noButton;
+	private JButton addButton, saveButton, yesButton, noButton, closeButton;
 	//private JTextField textField;
 	private JTextArea inputTextArea;
 	private JScrollPane inputScrollPane;
@@ -21,6 +21,7 @@ public class ChooserFrame implements ActionListener {
 	private ListHandler listMaker;
 	private JPanel panel;
 	private FileManipulator saveHandler;
+	private boolean listFinished = false;
 	
 	//private Font myFont = new Font("Ink Free", Font.BOLD, 10);
 	
@@ -82,7 +83,6 @@ public class ChooserFrame implements ActionListener {
 		panel.add(listDisplayPane, gbc);
 		gbc.gridy++;
 		gbc.fill = GridBagConstraints.NONE;
-		gbc.gridheight = 1;
 		gbc.gridwidth = 1;
 		gbc.anchor = GridBagConstraints.LINE_START;
 		
@@ -108,6 +108,15 @@ public class ChooserFrame implements ActionListener {
 		//noButton.setBounds(250, 400, 100, 50);
 		noButton.addActionListener(this);
 		panel.add(noButton, gbc);
+		gbc.gridx = 0;
+		gbc.gridy++;
+		gbc.gridwidth = 2;
+		gbc.anchor = GridBagConstraints.CENTER;
+		
+		closeButton = new JButton("Close");
+		closeButton.addActionListener(this);
+		panel.add(closeButton, gbc);
+		closeButton.setVisible(false);
 		
 		if(saveHandler.getFileIsThere()) {
 			yesButton.setVisible(true);
@@ -167,12 +176,18 @@ public class ChooserFrame implements ActionListener {
 				System.out.println("Failed to save list of goals");
 				e1.printStackTrace();
 			}
+			closeButton.setVisible(true);
+			addButton.setVisible(false);
+			saveButton.setVisible(false);
+			inputScrollPane.setVisible(false);
+			listDisplayPane.setVisible(false);
 		}
 		else if(e.getSource() == yesButton) {
 			listMaker.currentGoalCompleted();
 			String currentGoal = listMaker.chooseCurrentGoal();
 			if(currentGoal.isEmpty()) {
-				helperLabel.setText("You have completed all of your goals. Congratulation!");
+				helperLabel.setText("You have completed all of your goals. Congratulations!");
+				listFinished = true;
 			}
 			else {
 				helperLabel.setText("Your current goal is: " + currentGoal);
@@ -182,6 +197,11 @@ public class ChooserFrame implements ActionListener {
 					System.out.println("Failed to save list of goals");
 					e1.printStackTrace();
 				}
+			}
+			if(listFinished) {
+				closeButton.setVisible(true);
+				yesButton.setVisible(false);
+				noButton.setVisible(false);
 			}
 		}
 		else if(e.getSource() == noButton) {
@@ -195,6 +215,9 @@ public class ChooserFrame implements ActionListener {
 			}
 			frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 		}
+		else if(e.getSource() == closeButton) {
+			frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+		}
 	}
-
+	
 }
