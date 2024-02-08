@@ -208,7 +208,9 @@ public class ChooserFrame implements ActionListener {
 			frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 		}
 		else if(e.getSource() == closeButton) {
-			saveHandler.deleteGoalListFile();
+			if(listFinished) {
+				saveHandler.deleteGoalListFile();
+			}
 			frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 		}
 	}
