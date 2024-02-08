@@ -205,17 +205,10 @@ public class ChooserFrame implements ActionListener {
 			}
 		}
 		else if(e.getSource() == noButton) {
-			if(!listMaker.getCurrentGoal().isEmpty()) {
-				try {
-					saveHandler.saveGoalList(listMaker.createListToBeSaved());
-				} catch (IOException e1) {
-					System.out.println("Failed to save list of goals");
-					e1.printStackTrace();
-				}
-			}
 			frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 		}
 		else if(e.getSource() == closeButton) {
+			saveHandler.deleteGoalListFile();
 			frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 		}
 	}

@@ -5,8 +5,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class FileManipulator {
 	
@@ -17,10 +15,6 @@ public class FileManipulator {
 	private String goalListToSave;
 	
 	public FileManipulator() throws IOException {
-		/*
-		Path p = Paths.get("output.txt");
-		System.out.println(p.getRoot());
-		*/
 		try {
 			reader = new FileReader("goal list.txt");
 		}
@@ -34,18 +28,11 @@ public class FileManipulator {
 				goalListSaved = goalListSaved + (char)characterPosition;
 			}
 			reader.close();
-			File saveFile = new File("goal list.txt");
-			if(saveFile.delete()) {
-				
-				System.out.println("Save file deleted successfully");
-			}
-			else {
-				System.out.println("Failed to delete the save file");
-			}
 		}
 	}
 	
 	public void saveGoalList(String goalList) throws IOException {
+		deleteGoalListFile();
 		goalListToSave = goalList;
 		writer = new FileWriter("goal list.txt");
 		for (int i = 0; i < goalListToSave.length(); i++) {
@@ -60,6 +47,18 @@ public class FileManipulator {
 	
 	public boolean getFileIsThere() {
 		return fileIsThere;
+	}
+	
+	public void deleteGoalListFile() {
+		File saveFile = new File("goal list.txt");
+		if(saveFile.exists()) {
+			if(saveFile.delete()) {
+				System.out.println("Save file deleted successfully");
+			}
+			else {
+				System.out.println("Failed to delete the save file");
+			}
+		}
 	}
 
 }
